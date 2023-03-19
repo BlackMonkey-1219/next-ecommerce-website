@@ -2,7 +2,7 @@ import getDatabase from '@/lib/getDBClient';
 import { ObjectId } from 'mongodb';
 
 class User {
-  protected id: ObjectId | undefined;
+  public _id: ObjectId | undefined;
   protected userFirstName: string = '';
   protected userLastName: string = '';
   protected userAge: number = 17;
@@ -37,11 +37,11 @@ class User {
     this.userCity = city;
     this.userAddress = address;
     this.userPostalCode = postalCode;
-    this.id = id ?? undefined;
+    this._id = id ?? undefined;
   }
 
   get Id() {
-    return this.id;
+    return this._id;
   }
 
   set FirstName(name: string) {
@@ -114,9 +114,9 @@ class User {
     return this.userPostalCode;
   }
 
-  async pushUserToDataBase() {
+  async pushToDataBase() {
     try {
-      if (this.id) {
+      if (this._id) {
         throw new Error('This is document already exists on the database.');
       }
 
@@ -133,13 +133,13 @@ class User {
 
   async saveChanges() {
     try {
-      if (!this.id) {
+      if (!this._id) {
         throw new Error('This is a new document. Try pushing to the database.');
       }
 
       const db = await getDatabase();
       const collection = db.collection('users');
-      const result = await collection.updateOne({ _id: this.id }, this);
+      const result = await collection.updateOne({ _id: this._id }, this);
     } catch (error) {
       console.log('[-] COULD NOT SAVE CHANGES TO THE DATABASE...');
       console.log('===============ERROR===============');
