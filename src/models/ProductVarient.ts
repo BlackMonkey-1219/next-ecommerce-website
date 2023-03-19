@@ -2,21 +2,21 @@ import getDatabase from '@/lib/getDBClient';
 import { ObjectId } from 'mongodb';
 
 class ProductVarient {
-  private id: ObjectId | undefined;
+  public _id: ObjectId | undefined;
   private varientName: string = '';
   private varientDescription: string = '';
-  private varientPrice: number = 0;
+  private varientPrice: string = '';
 
-  constructor(name: string, description: string, price: number, id?: ObjectId) {
+  constructor(name: string, description: string, price: string, id?: ObjectId) {
     this.varientName = name;
     this.varientDescription = description;
     this.varientPrice = price;
 
-    this.id = id ?? undefined;
+    this._id = id ?? undefined;
   }
 
   get Id() {
-    return this.id;
+    return this._id;
   }
 
   set VarientName(name: string) {
@@ -33,7 +33,7 @@ class ProductVarient {
     return this.varientDescription;
   }
 
-  set VarientPrice(price: number) {
+  set VarientPrice(price: string) {
     this.varientPrice = price;
   }
   get VarientPrice() {
@@ -42,7 +42,7 @@ class ProductVarient {
 
   async pushToDatabase() {
     try {
-      if (this.id) {
+      if (this._id) {
         throw new Error('This is document already exists on the database.');
       }
 
@@ -59,13 +59,13 @@ class ProductVarient {
 
   async saveChanges() {
     try {
-      if (!this.id) {
+      if (!this._id) {
         throw new Error('This is a new document. Try pushing to the database.');
       }
 
       const db = await getDatabase();
       const collection = db.collection('product_varients');
-      collection.updateOne({ id: this.id }, this);
+      collection.updateOne({ id: this._id }, this);
     } catch (error) {
       console.log('[-] COULD NOT SAVE CHANGES TO THE DATABASE...');
       console.log('=====================ERROR=====================');
@@ -78,7 +78,7 @@ class ProductVarient {
     try {
       const db = await getDatabase();
       const collection = db.collection('product_varients');
-      const doc = await collection.findOne({ id: id });
+      const doc = await collection.findOne({ _id: id });
 
       if (doc) {
         return new ProductVarient(
@@ -101,7 +101,7 @@ class ProductVarient {
     try {
       const db = await getDatabase();
       const collection = db.collection('product_varient');
-      return await collection.deleteOne({ id: id });
+      return await collection.deleteOne({ _id: id });
     } catch (error) {
       console.log('=====================ERROR=====================');
       console.log(error);

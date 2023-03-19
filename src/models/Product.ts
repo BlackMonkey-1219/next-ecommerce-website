@@ -2,7 +2,8 @@ import { ObjectId } from 'mongodb';
 import getDatabase from '@/lib/getDBClient';
 
 class Product {
-  private id: ObjectId | undefined;
+  private sellerId: ObjectId;
+  public _id: ObjectId | undefined;
   private productName: string = '';
   private productDescription: string = '';
   private productVarients: Array<ObjectId> = [];
@@ -12,23 +13,29 @@ class Product {
   private createdDate: number;
 
   constructor(
+    sellerId: ObjectId,
     name: string,
     description: string,
     categoryId: ObjectId,
     varients: Array<ObjectId>,
     id?: ObjectId,
-    createdDate: number = Date.now()
+    createdDate?: number
   ) {
+    this.sellerId = sellerId;
     this.productName = name;
     this.productDescription = description;
     this.categoryId = categoryId;
     this.productVarients = varients;
-    this.id = id ?? undefined;
-    this.createdDate = createdDate;
+    this._id = id ?? undefined;
+    this.createdDate = createdDate ?? Date.now();
   }
 
   get Id() {
-    return this.id;
+    return this._id;
+  }
+
+  get SellerId() {
+    return this.sellerId;
   }
 
   get CreatedDate() {
@@ -76,7 +83,7 @@ class Product {
 
   async pushToDatabase() {
     try {
-      if (this.id) {
+      if (this._id) {
         throw new Error('This document already exists on the database.');
       }
 
@@ -93,13 +100,13 @@ class Product {
 
   async saveChanges() {
     try {
-      if (!this.id) {
+      if (!this._id) {
         throw new Error('This is a new document. Try pushing to the database.');
       }
 
       const db = await getDatabase();
       const collection = db.collection('products');
-      return await collection.updateOne({ _id: this.id }, this);
+      return await collection.updateOne({ _id: this._id }, this);
     } catch (error) {
       console.log('[-] COULD NOT SAVE CHANGES TO THE DATABASE...');
       console.log('=====================ERROR=====================');
@@ -112,15 +119,16 @@ class Product {
     try {
       const db = await getDatabase();
       const collection = db.collection('products');
-      const doc = await collection.findOne({ id: id });
+      const doc = await collection.findOne({ _id: id });
 
       if (doc) {
         return new Product(
+          doc.sellerId,
           doc.productName,
           doc.productDescription,
           doc.categoryId,
           doc.productVarients,
-          doc.id,
+          doc._id,
           doc.createdDate
         );
       } else {
@@ -137,7 +145,7 @@ class Product {
     try {
       const db = await getDatabase();
       const collection = db.collection('products');
-      return await collection.deleteOne({ id: id });
+      return await collection.deleteOne({ _id: id });
     } catch (error) {
       console.log('=====================ERROR=====================');
       console.log(error);
