@@ -45,7 +45,7 @@ class Seller extends User {
   }
 
   get Id() {
-    return this.id;
+    return this._id;
   }
 
   get SellerRating() {
@@ -73,7 +73,7 @@ class Seller extends User {
     return this.products;
   }
 
-  async pushSellerToDatabase() {
+  override async pushToDataBase() {
     try {
       const db = await getDatabase();
       const collection = db.collection('sellers');
@@ -86,11 +86,11 @@ class Seller extends User {
     }
   }
 
-  async saveChanges() {
+  override async saveChanges() {
     try {
       const db = await getDatabase();
       const collection = db.collection('sellers');
-      collection.updateOne({ _id: this.id }, this);
+      collection.updateOne({ _id: this._id }, this);
     } catch (error) {
       console.log('[-] COULD NOT SAVE CHANGES TO THE DATABASE...');
       console.log('===============ERROR===============');
@@ -99,10 +99,10 @@ class Seller extends User {
     }
   }
 
-  static async findById(id: ObjectId) {
+  static override async findById(id: ObjectId) {
     try {
       const db = await getDatabase();
-      const collection = db.collection('users');
+      const collection = db.collection('sellers');
       const doc = await collection.findOne({ _id: id });
       if (doc) {
         return new Seller(
@@ -127,22 +127,18 @@ class Seller extends User {
       }
     } catch (error) {
       console.log('[-] COULD NOT FETCH USER...');
-      console.log('===============ERROR===============');
-      console.log(error);
-      console.log('===================================');
+      console.log(error, '\n');
     }
   }
 
-  static async deleteById(id: ObjectId) {
+  static override async deleteById(id: ObjectId) {
     try {
       const db = await getDatabase();
-      const collection = db.collection('users');
+      const collection = db.collection('sellers');
       return await collection.deleteOne({ _id: id });
     } catch (error) {
       console.log('[-] COULD NOT DELETE USER...');
-      console.log('===============ERROR===============');
-      console.log(error);
-      console.log('===================================');
+      console.log(error, '\n');
     }
   }
 }
