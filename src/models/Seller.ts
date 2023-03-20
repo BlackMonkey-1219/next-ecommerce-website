@@ -1,11 +1,12 @@
-import { ObjectId } from 'mongodb';
+import { ObjectId, WithId } from 'mongodb';
 import User from './User';
 import getDatabase from '@/lib/getDBClient';
+import { SellerData } from '@/types/seller_route_types';
 
 class Seller extends User {
   private shopId: ObjectId | undefined;
   private products: Array<ObjectId> = [];
-  private sellerRating: string = '5.0';
+  private sellerRating: number = 5;
   private sellerNIC: string = '';
 
   constructor(
@@ -17,13 +18,13 @@ class Seller extends User {
     country: string,
     state: string,
     city: string,
-    postalCode: number,
+    postalCode: string,
     address: Array<string>,
     id: ObjectId,
     NIC: string,
+    products: Array<ObjectId> = [],
     shopId?: ObjectId,
-    sellerRating?: string,
-    products?: Array<ObjectId>
+    sellerRating?: number
   ) {
     super(
       firstName,
@@ -40,8 +41,8 @@ class Seller extends User {
     );
     this.sellerNIC = NIC;
     this.shopId = shopId ?? undefined;
-    this.sellerRating = sellerRating ?? '5.0';
-    this.products = products ?? [];
+    this.sellerRating = sellerRating ?? 5;
+    this.products = products;
   }
 
   get Id() {
@@ -77,7 +78,7 @@ class Seller extends User {
     try {
       const db = await getDatabase();
       const collection = db.collection('sellers');
-      collection.insertOne(this);
+      return await collection.insertOne(this);
     } catch (error) {
       console.log('[-] COULD NOT PUSH NEW SELLER TO THE DATBASE...');
       console.log('===============ERROR===============');
@@ -106,7 +107,10 @@ class Seller extends User {
     try {
       const db = await getDatabase();
       const collection = db.collection('sellers');
-      const doc = await collection.findOne({ _id: id });
+      const doc = (await collection.findOne({
+        _id: id,
+      })) as SellerData;
+
       if (doc) {
         return new Seller(
           doc.userFirstName,
@@ -121,9 +125,9 @@ class Seller extends User {
           doc.userAddress,
           doc._id,
           doc.sellerNIC,
+          doc.products,
           doc.shopId,
-          doc.sellerRating,
-          doc.products
+          doc.sellerRating
         );
       } else {
         return null;
