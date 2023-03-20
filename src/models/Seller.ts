@@ -5,7 +5,7 @@ import getDatabase from '@/lib/getDBClient';
 class Seller extends User {
   private shopId: ObjectId | undefined;
   private products: Array<ObjectId> = [];
-  private sellerRating: number = 5.0;
+  private sellerRating: string = '5.0';
   private sellerNIC: string = '';
 
   constructor(
@@ -22,7 +22,7 @@ class Seller extends User {
     id: ObjectId,
     NIC: string,
     shopId?: ObjectId,
-    sellerRating?: number,
+    sellerRating?: string,
     products?: Array<ObjectId>
   ) {
     super(
@@ -40,7 +40,7 @@ class Seller extends User {
     );
     this.sellerNIC = NIC;
     this.shopId = shopId ?? undefined;
-    this.sellerRating = sellerRating ?? 5.0;
+    this.sellerRating = sellerRating ?? '5.0';
     this.products = products ?? [];
   }
 
@@ -52,10 +52,10 @@ class Seller extends User {
     return this.sellerRating;
   }
 
-  set SellerNIC(nic: string) {
+  set NIC(nic: string) {
     this.sellerNIC = nic;
   }
-  get SellerNIC() {
+  get NIC() {
     return this.sellerNIC;
   }
 
@@ -90,7 +90,10 @@ class Seller extends User {
     try {
       const db = await getDatabase();
       const collection = db.collection('sellers');
-      collection.updateOne({ _id: this._id }, this);
+      return await collection.updateOne(
+        { _id: this._id },
+        { $set: { ...this } }
+      );
     } catch (error) {
       console.log('[-] COULD NOT SAVE CHANGES TO THE DATABASE...');
       console.log('===============ERROR===============');
