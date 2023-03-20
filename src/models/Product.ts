@@ -1,12 +1,13 @@
 import { ObjectId } from 'mongodb';
 import getDatabase from '@/lib/getDBClient';
+import ProductVarient from './ProductVarient';
 
 class Product {
   public _id: ObjectId | undefined;
   private productSellerId: ObjectId;
   private productName: string = '';
   private productDescription: string = '';
-  private productVarients: Array<ObjectId> = [];
+  private productVarients: Array<ProductVarient> = [];
   private productCategoryId: ObjectId;
   private productReviews: Array<ObjectId> = [];
   private productRating: number = 5.0;
@@ -17,7 +18,7 @@ class Product {
     name: string,
     description: string,
     categoryId: ObjectId,
-    varients: Array<ObjectId>,
+    varients: Array<ProductVarient>,
     id?: ObjectId,
     createdDate?: number
   ) {
@@ -67,7 +68,7 @@ class Product {
     return this.productCategoryId;
   }
 
-  set ProductVarients(varients: Array<ObjectId>) {
+  set ProductVarients(varients: Array<ProductVarient>) {
     this.productVarients = varients;
   }
   get ProductVarients() {
