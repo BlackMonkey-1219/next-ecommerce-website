@@ -2,15 +2,15 @@ import { ObjectId } from 'mongodb';
 import getDatabase from '@/lib/getDBClient';
 
 class Product {
-  private sellerId: ObjectId;
   public _id: ObjectId | undefined;
+  private productSellerId: ObjectId;
   private productName: string = '';
   private productDescription: string = '';
   private productVarients: Array<ObjectId> = [];
-  private categoryId: ObjectId;
+  private productCategoryId: ObjectId;
   private productReviews: Array<ObjectId> = [];
   private productRating: number = 5.0;
-  private createdDate: number;
+  private productCreatedDate: number;
 
   constructor(
     sellerId: ObjectId,
@@ -21,13 +21,13 @@ class Product {
     id?: ObjectId,
     createdDate?: number
   ) {
-    this.sellerId = sellerId;
+    this.productSellerId = sellerId;
     this.productName = name;
     this.productDescription = description;
-    this.categoryId = categoryId;
+    this.productCategoryId = categoryId;
     this.productVarients = varients;
     this._id = id ?? undefined;
-    this.createdDate = createdDate ?? Date.now();
+    this.productCreatedDate = createdDate ?? Date.now();
   }
 
   get Id() {
@@ -35,11 +35,11 @@ class Product {
   }
 
   get SellerId() {
-    return this.sellerId;
+    return this.productSellerId;
   }
 
   get CreatedDate() {
-    return this.createdDate;
+    return this.productCreatedDate;
   }
 
   get ProductRating() {
@@ -61,10 +61,10 @@ class Product {
   }
 
   set CategoryId(categoryId: ObjectId) {
-    this.categoryId = categoryId;
+    this.productCategoryId = categoryId;
   }
   get CategoryId() {
-    return this.categoryId;
+    return this.productCategoryId;
   }
 
   set ProductVarients(varients: Array<ObjectId>) {
@@ -106,7 +106,12 @@ class Product {
 
       const db = await getDatabase();
       const collection = db.collection('products');
-      return await collection.updateOne({ _id: this._id }, this);
+      return await collection.updateOne(
+        { _id: this._id },
+        {
+          $set: { ...this },
+        }
+      );
     } catch (error) {
       console.log('[-] COULD NOT SAVE CHANGES TO THE DATABASE...');
       console.log('=====================ERROR=====================');
