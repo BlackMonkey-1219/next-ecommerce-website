@@ -21,68 +21,47 @@ export default async function Handler(
   const productId = ObjectId.createFromHexString(product_id);
   console.log(productId);
 
-  // GET SELLER & PRODUCT
-  const product = await Product.findById(productId);
-  console.log(product);
-  const seller = await Seller.findById(sellerId);
-  console.log(seller);
-
-  // REMOVE PRODUCT FROM SELLER
   try {
+    // GET SELLER & PRODUCT
+    const product = await Product.findById(productId);
+    console.log(product);
+    const seller = await Seller.findById(sellerId);
+    console.log(seller);
+
+    // REMOVE PRODUCT FROM SELLER
     const products = seller!.Products;
     console.log('[i] PRODUCTS: ', products);
     seller!.Products = products.filter((id) => {
-      if (id !== productId) {
+      if (id.toString() !== productId.toString()) {
         return id;
       }
     });
 
     const sellerUpdateResult = await seller!.saveChanges();
-    console.log(sellerUpdateResult);
-  } catch (error) {
-    console.log('[-] COULD NOT REMOVE PRODUCT FROM SELLER...');
-    console.log(error, '\n');
-  }
+    console.log(sellerUpdateResult, '\n');
 
-  // REMOVE VARIENTS
-  try {
-    const productVarients = product!.ProductVarients;
-    console.log('[i] PRODUCT VARIENTS: ', productVarients);
-    const varientsDeletePromises = productVarients.map((varientId) => {
-      return ProductVarient.deleteById(varientId);
-    });
-
-    const varientsRemoveResult = await Promise.all(varientsDeletePromises);
-    console.log(varientsRemoveResult);
-  } catch (error) {
-    console.log('[-] COULD NOT REMOVE VARIENTS...');
-    console.log(error, '\n');
-  }
-
-  // REMOVE REVIEWS
-  try {
+    // REMOVE REVIEWS
     const productReviews = product!.ProductReviews;
-    console.log('[i] PRODUCT REVIEWS: ', productReviews);
+    console.log('[i] PRODUCT REVIEWS: ', productReviews, '\n');
     const reviewDeletePromises = productReviews.map((reviewId) => {
       return ProductReview.deleteById(reviewId);
     });
 
     const reviewDeleteResults = await Promise.all(reviewDeletePromises);
     console.log(reviewDeleteResults);
-  } catch (error) {
-    console.log('[-] COULD NOT REMOVE REVIEWS...');
-    console.log(error, '\n');
-  }
 
-  // REOMOVE PRODUCT
-  try {
+    // REOMOVE PRODUCT
     const productRemoveResult = await Product.deleteById(productId);
     console.log(productRemoveResult);
+
+    console.log('[+] PRODUCT REMOVED SUCCESSFULLY...\n');
+    res.json({ message: '[+] PRODUCT DELETED SUCCESSFULLY...' });
   } catch (error) {
-    console.log('[-] COULD NOT REMOVE PRODUCT...');
+    console.log('[-] FAILED TO REMOVE PRODUCT...\n');
     console.log(error, '\n');
+
+    res.json({ message: '[-] COULD NOT REMOVE PRODUCT...' });
   }
 
-  res.json({ message: '[+] Product Deleted Succesfully...' });
   endSection();
 }
