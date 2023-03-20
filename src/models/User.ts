@@ -139,7 +139,7 @@ class User {
 
       const db = await getDatabase();
       const collection = db.collection('users');
-      const result = await collection.updateOne({ _id: this._id }, this);
+      return await collection.updateOne({ _id: this._id }, this);
     } catch (error) {
       console.log('[-] COULD NOT SAVE CHANGES TO THE DATABASE...');
       console.log('===============ERROR===============');
