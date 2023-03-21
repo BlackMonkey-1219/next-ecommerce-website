@@ -68,8 +68,8 @@ class Shop {
     return this.shopEmail;
   }
 
-  set ShopRacks(rackIds: Array<Rack>) {
-    this.shopRacks = rackIds;
+  set ShopRacks(racks: Array<Rack>) {
+    this.shopRacks = racks;
   }
   get ShopRacks() {
     return this.shopRacks;
@@ -120,7 +120,18 @@ class Shop {
       const db = await getDatabase();
       const collection = db.collection('shops');
       const doc = await collection.findOne({ _id: id });
+
       if (doc) {
+        const racks = (
+          doc.shopRacks as Array<{
+            id: string;
+            rackName: string;
+            rackItems: Array<ObjectId>;
+          }>
+        ).map((rack) => {
+          return new Rack(rack.rackName, rack.rackItems, rack.id);
+        });
+
         return new Shop(
           doc.ownerId,
           doc.shopName,
@@ -128,7 +139,7 @@ class Shop {
           doc.shopContactNumber,
           doc.shopEmail,
           doc.shopRating,
-          doc.shopRacks,
+          racks,
           doc._id
         );
       }
@@ -147,6 +158,16 @@ class Shop {
       const resultDoc = await collection.findOne({ ownerId: id });
 
       if (resultDoc) {
+        const racks = (
+          resultDoc.shopRacks as Array<{
+            id: string;
+            rackName: string;
+            rackItems: Array<ObjectId>;
+          }>
+        ).map((rack) => {
+          return new Rack(rack.rackName, rack.rackItems, rack.id);
+        });
+
         return new Shop(
           resultDoc.ownerId,
           resultDoc.shopName,
@@ -154,7 +175,7 @@ class Shop {
           resultDoc.shopContactNumber,
           resultDoc.shopEmail,
           resultDoc.shopRating,
-          resultDoc.shopRacks,
+          racks,
           resultDoc._id
         );
       } else {
