@@ -1,7 +1,7 @@
 import { ObjectId } from 'mongodb';
 
 class Rack {
-  private _id: ObjectId | undefined;
+  private _id: ObjectId;
   private rackName: string;
   private rackItems: Array<ObjectId>;
 
