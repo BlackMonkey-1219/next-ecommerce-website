@@ -1,22 +1,22 @@
 import { ObjectId } from 'mongodb';
 
 class Rack {
-  private _id: ObjectId;
-  private rackName: string;
+  private id: string;
+  private rackName: string = '';
   private rackItems: Array<ObjectId>;
 
   constructor(
     name: string,
     rackItems: Array<ObjectId> = [],
-    id: ObjectId | undefined = undefined
+    id: string | undefined = undefined
   ) {
     this.rackName = name;
     this.rackItems = rackItems;
-    this._id = id ?? new ObjectId();
+    this.id = id ?? new ObjectId().toString();
   }
 
   get Id() {
-    return this._id;
+    return this.id;
   }
 
   set RackName(name: string) {
