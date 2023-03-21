@@ -20,7 +20,11 @@ export default async function Handler(
     }
 
     // CREATE NEW SHOP
-    const shop = new Shop(seller_id, shop_name, shop_description);
+    const shop = new Shop(
+      ObjectId.createFromHexString(seller_id),
+      shop_name,
+      shop_description
+    );
 
     // PUSH SHOP TO DATABASE
     const shopPushResult = await shop.pushToDataBase();
