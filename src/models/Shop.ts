@@ -7,6 +7,8 @@ class Shop {
   private ownerId: ObjectId;
   private shopName: string = '';
   private shopDescription = '';
+  private shopContactNumber: string;
+  private shopEmail: string;
   private shopRating: number = 5;
   private shopRacks: Array<Rack> = [];
 
@@ -14,6 +16,8 @@ class Shop {
     ownerId: ObjectId,
     name: string,
     description: string,
+    contactNumber: string,
+    email: string,
     rating: number = 5,
     racks: Array<Rack> = [],
     id: ObjectId | undefined = undefined
@@ -21,6 +25,8 @@ class Shop {
     this.ownerId = ownerId;
     this.shopName = name;
     this.shopDescription = description;
+    this.shopContactNumber = contactNumber;
+    this.shopEmail = email;
     this.shopRating = rating;
     this.shopRacks = racks;
     this._id = id;
@@ -46,6 +52,20 @@ class Shop {
   }
   get ShopDescription() {
     return this.shopDescription;
+  }
+
+  set ShopContactNumber(number: string) {
+    this.shopContactNumber = number;
+  }
+  get ShopContactNumber() {
+    return this.shopContactNumber;
+  }
+
+  set ShopEmail(email: string) {
+    this.shopEmail = email;
+  }
+  get ShopEmail() {
+    return this.shopEmail;
   }
 
   set ShopRacks(rackIds: Array<Rack>) {
@@ -83,7 +103,10 @@ class Shop {
     try {
       const db = await getDatabase();
       const collection = db.collection('shops');
-      collection.updateOne({ _id: this._id }, this);
+      return await collection.updateOne(
+        { _id: this._id },
+        { $set: { ...this } }
+      );
     } catch (error) {
       console.log('[-] COULD NOT SAVE CHANGES TO THE DATABASE...');
       console.log('==============ERROR==============');
@@ -102,6 +125,8 @@ class Shop {
           doc.ownerId,
           doc.shopName,
           doc.shopDescription,
+          doc.shopContactNumber,
+          doc.shopEmail,
           doc.shopRating,
           doc.shopRacks,
           doc._id
@@ -126,6 +151,8 @@ class Shop {
           resultDoc.ownerId,
           resultDoc.shopName,
           resultDoc.shopDescription,
+          resultDoc.shopContactNumber,
+          resultDoc.shopEmail,
           resultDoc.shopRating,
           resultDoc.shopRacks,
           resultDoc._id
