@@ -1,32 +1,37 @@
 import getDatabase from '@/lib/getDBClient';
 import { ObjectId } from 'mongodb';
+import Rack from './Rack';
 
 class Shop {
-  private id: ObjectId | undefined;
+  public _id: ObjectId | undefined;
+  private ownerId: ObjectId;
   private shopName: string = '';
   private shopDescription = '';
-  private shopRating: number = 5.0;
-  private shopRacks: Array<ObjectId> = [];
-  private shopProducts: Array<ObjectId> = [];
+  private shopRating: number = 5;
+  private shopRacks: Array<Rack> = [];
 
   constructor(
+    ownerId: ObjectId,
     name: string,
     description: string,
-    rating: number = 5.0,
-    racks?: Array<ObjectId>,
-    products?: Array<ObjectId>,
-    id?: ObjectId
+    rating: number = 5,
+    racks: Array<Rack> = [],
+    id: ObjectId | undefined = undefined
   ) {
+    this.ownerId = ownerId;
     this.shopName = name;
     this.shopDescription = description;
     this.shopRating = rating;
-    this.shopRacks = racks ?? [];
-    this.shopProducts = products ?? [];
-    this.id = id ?? undefined;
+    this.shopRacks = racks;
+    this._id = id;
   }
 
   get Id() {
-    return this.id;
+    return this._id;
+  }
+
+  get OwnerId() {
+    return this.ownerId;
   }
 
   set ShopName(name: string) {
@@ -43,18 +48,11 @@ class Shop {
     return this.shopDescription;
   }
 
-  set ShopRacks(rackIds: Array<ObjectId>) {
+  set ShopRacks(rackIds: Array<Rack>) {
     this.shopRacks = rackIds;
   }
   get ShopRacks() {
     return this.shopRacks;
-  }
-
-  set ShopProducts(productIds: Array<ObjectId>) {
-    this.shopProducts = productIds;
-  }
-  get ShopProducts() {
-    return this.shopProducts;
   }
 
   set ShopRating(rating: number) {
@@ -85,7 +83,7 @@ class Shop {
     try {
       const db = await getDatabase();
       const collection = db.collection('shops');
-      collection.updateOne({ _id: this.id }, this);
+      collection.updateOne({ _id: this._id }, this);
     } catch (error) {
       console.log('[-] COULD NOT SAVE CHANGES TO THE DATABASE...');
       console.log('==============ERROR==============');
@@ -101,18 +99,45 @@ class Shop {
       const doc = await collection.findOne({ _id: id });
       if (doc) {
         return new Shop(
+          doc.ownerId,
           doc.shopName,
           doc.shopDescription,
           doc.shopRating,
           doc.shopRacks,
-          doc.shopProducts,
           doc._id
         );
       }
     } catch (error) {
-      console.log('==============ERROR==============');
-      console.log(error);
-      console.log('=================================');
+      console.log('[-] COULD NOT SEARCH FOR SHOPS...');
+      console.log('==============ERROR==============\n');
+      console.log(error, '\n');
+      console.log('=================================\n');
+    }
+  }
+
+  static async findBySellerId(id: ObjectId) {
+    try {
+      const db = await getDatabase();
+      const collection = db.collection('shops');
+      const resultDoc = await collection.findOne({ ownerId: id });
+
+      if (resultDoc) {
+        return new Shop(
+          resultDoc.ownerId,
+          resultDoc.shopName,
+          resultDoc.shopDescription,
+          resultDoc.shopRating,
+          resultDoc.shopRacks,
+          resultDoc._id
+        );
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.log('[-] COULD NOT SEARCH FOR SHOPS...');
+      console.log('==============ERROR==============\n');
+      console.log(error, '\n');
+      console.log('=================================\n');
     }
   }
 
@@ -122,9 +147,9 @@ class Shop {
       const collection = db.collection('shops');
       return await collection.deleteOne({ _id: id });
     } catch (error) {
-      console.log('==============ERROR==============');
-      console.log(error);
-      console.log('=================================');
+      console.log('==============ERROR==============\n');
+      console.log(error, '\n');
+      console.log('=================================\n');
     }
   }
 }
