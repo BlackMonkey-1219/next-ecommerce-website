@@ -1,18 +1,19 @@
 import getDatabase from '@/lib/getDBClient';
 import { ObjectId } from 'mongodb';
+import Cart from './Cart';
 
 class User {
   public _id: ObjectId | undefined;
-  protected userFirstName: string = '';
-  protected userLastName: string = '';
-  protected userAge: number = 17;
-  protected userCountry: string = '';
-  protected userState: string = '';
-  protected userCity: string = '';
-  protected userPostalCode: number = 0;
-  protected userAddress: Array<string> = [];
-  protected userEmail: string = '';
-  protected userContactNumber: string = '';
+  protected userFirstName: string;
+  protected userLastName: string;
+  protected userAge: number;
+  protected userCountry: string;
+  protected userState: string;
+  protected userCity: string;
+  protected userPostalCode: string;
+  protected userAddress: Array<string>;
+  protected userEmail: string;
+  protected userContactNumber: string;
 
   constructor(
     firstName: string,
@@ -23,9 +24,9 @@ class User {
     country: string,
     state: string,
     city: string,
-    postalCode: number,
+    postalCode: string,
     address: Array<string>,
-    id: ObjectId
+    id?: ObjectId
   ) {
     this.userFirstName = firstName;
     this.userLastName = lastName;
@@ -107,7 +108,7 @@ class User {
     return this.userCountry;
   }
 
-  set PostalCode(code: number) {
+  set PostalCode(code: string) {
     this.userPostalCode = code;
   }
   get PostalCode() {
@@ -122,7 +123,7 @@ class User {
 
       const db = await getDatabase();
       const collection = db.collection('users');
-      collection.insertOne(this);
+      return await collection.insertOne(this);
     } catch (error) {
       console.log('[-] COULD NOT PUSH NEW USER TO THE DATABASE...');
       console.log('===============ERROR===============');
@@ -139,7 +140,10 @@ class User {
 
       const db = await getDatabase();
       const collection = db.collection('users');
-      return await collection.updateOne({ _id: this._id }, this);
+      return await collection.updateOne(
+        { _id: this._id },
+        { $set: { ...this } }
+      );
     } catch (error) {
       console.log('[-] COULD NOT SAVE CHANGES TO THE DATABASE...');
       console.log('===============ERROR===============');
