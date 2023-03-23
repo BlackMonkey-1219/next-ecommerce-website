@@ -1,4 +1,5 @@
 import Seller from '@/models/Seller';
+import { GetSellerProfileRequest } from '@/types/seller_route_types';
 import startSection, { endSection } from '@/utility/logToTerminal';
 import { ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -11,7 +12,7 @@ export default async function Handler(
   console.log('REQ BODY: ', req.body);
 
   try {
-    const { seller_id } = req.body;
+    const { seller_id } = req.body as GetSellerProfileRequest;
 
     // FIND SELLER PROFILE
     const seller = await Seller.findById(

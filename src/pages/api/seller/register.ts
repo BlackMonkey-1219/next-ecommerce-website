@@ -1,5 +1,5 @@
 import Seller from '@/models/Seller';
-import { DataSellerCreate } from '@/types/seller_route_types';
+import { CreateSellerProfileRequest } from '@/types/seller_route_types';
 import startSection, { endSection } from '@/utility/logToTerminal';
 import { ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -23,7 +23,7 @@ export default async function Handler(
     user_city,
     user_address,
     user_postal_code,
-  } = req.body as DataSellerCreate;
+  } = req.body as CreateSellerProfileRequest;
 
   try {
     // CREATE NEW SELLER

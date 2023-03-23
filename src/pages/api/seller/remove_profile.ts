@@ -3,6 +3,7 @@ import Seller from '@/models/Seller';
 import Shop from '@/models/Shop';
 import startSection, { endSection } from '@/utility/logToTerminal';
 import { ObjectId } from 'mongodb';
+import { RemoveSellerProfileRequest } from '../../../types/seller_route_types';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function Handler(
@@ -12,7 +13,7 @@ export default async function Handler(
   startSection('REMOVE SELLER PROFILE');
   console.log('REQ BODY: ', req.body);
 
-  const { seller_id } = req.body;
+  const { seller_id } = req.body as RemoveSellerProfileRequest;
 
   try {
     const seller = await Seller.findById(
