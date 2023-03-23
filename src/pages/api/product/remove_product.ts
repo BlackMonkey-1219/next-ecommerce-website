@@ -2,7 +2,7 @@ import Product from '@/models/Product';
 import ProductReview from '@/models/ProductReview';
 import ProductVarient from '@/models/ProductVarient';
 import Seller from '@/models/Seller';
-import { DataRemoveProduct } from '@/types/product_route_types';
+import { RemoveProductRequest } from '@/types/product_route_types';
 import startSection, { endSection } from '@/utility/logToTerminal';
 import { ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -14,7 +14,7 @@ export default async function Handler(
   startSection('REMOVE PRODUCT');
   console.log('REQ BODY: ', req.body);
 
-  const { product_id, seller_id } = req.body as DataRemoveProduct;
+  const { product_id, seller_id } = req.body as RemoveProductRequest;
 
   const sellerId = ObjectId.createFromHexString(seller_id);
   console.log(sellerId);

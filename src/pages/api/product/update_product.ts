@@ -1,5 +1,5 @@
 import Product from '@/models/Product';
-import { DataProductUpdate } from '@/types/product_route_types';
+import { UpdateProductRequest } from '@/types/product_route_types';
 import startSection, { endSection } from '@/utility/logToTerminal';
 import { ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -12,7 +12,7 @@ export default async function Handler(
   console.log('REQ BODY: ', req.body);
 
   const { product_id, product_name, product_description, product_category_id } =
-    req.body as DataProductUpdate;
+    req.body as UpdateProductRequest;
 
   const productId = ObjectId.createFromHexString(product_id);
   try {

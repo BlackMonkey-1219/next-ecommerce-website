@@ -1,7 +1,7 @@
 import Product from '@/models/Product';
 import ProductVarient from '@/models/ProductVarient';
 import Seller from '@/models/Seller';
-import { DataAddProduct } from '@/types/product_route_types';
+import { AddProductRequest } from '@/types/product_route_types';
 import startSection, { endSection } from '@/utility/logToTerminal';
 import { ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -18,7 +18,7 @@ export default async function Handler(
     product_description,
     product_varients,
     product_category_id,
-  } = req.body as DataAddProduct;
+  } = req.body as AddProductRequest;
 
   try {
     // CREATE VARIENTS
