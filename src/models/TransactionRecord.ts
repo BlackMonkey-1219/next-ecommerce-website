@@ -2,44 +2,47 @@ import getDatabase from '@/lib/getDBClient';
 import { ObjectId } from 'mongodb';
 
 class TransactionRecord {
-  private id: ObjectId | undefined;
-  private userId: ObjectId;
-  private shopId: ObjectId;
-  private products: Array<{ productId: ObjectId; productCount: number }> = [];
-  private transactionDate: number = 0;
+  public _id: ObjectId | undefined;
+  private transactionUserId: ObjectId;
+  private transactionShopId: ObjectId;
+  private transactionProducts: Array<{
+    productId: ObjectId;
+    productCount: number;
+  }> = [];
+  private transactionDate: number;
 
   constructor(
     userId: ObjectId,
     shopId: ObjectId,
     products: Array<{ productId: ObjectId; productCount: number }>,
-    transactionDate?: number,
-    id?: ObjectId
+    transactionDate: number = Date.now(),
+    id?: ObjectId | undefined
   ) {
-    this.id = id ?? undefined;
-    this.userId = userId;
-    this.shopId = shopId;
-    this.transactionDate = transactionDate ?? Date.now();
-    this.products = products;
+    this._id = id ?? undefined;
+    this.transactionUserId = userId;
+    this.transactionShopId = shopId;
+    this.transactionDate = transactionDate;
+    this.transactionProducts = products;
   }
 
   get Record() {
     return {
-      id: this.id,
-      userId: this.userId,
-      shopId: this.shopId,
+      id: this._id,
+      userId: this.transactionUserId,
+      shopId: this.transactionShopId,
       date: this.transactionDate,
-      products: this.products,
+      products: this.transactionProducts,
     };
   }
 
   async pushToDatabase() {
     try {
-      if (this.id) {
+      if (this._id) {
         throw new Error('This is document already exists on the database.');
       }
 
       const db = await getDatabase();
-      const collection = db.collection('racks');
+      const collection = db.collection('transactions');
       return await collection.insertOne(this);
     } catch (error) {
       console.log('[-] COULD NOT PUSH NEW RACK TO THE DATABASE...');
@@ -52,14 +55,14 @@ class TransactionRecord {
   static async findById(id: ObjectId) {
     try {
       const db = await getDatabase();
-      const collection = db.collection('racks');
-      const doc = await collection.findOne({ id: id });
+      const collection = db.collection('transactions');
+      const doc = await collection.findOne({ _id: id });
 
       if (doc) {
         return new TransactionRecord(
-          doc.userId,
-          doc.shopId,
-          doc.products,
+          doc.transactionUserId,
+          doc.transactionShopId,
+          doc.transactionProducts,
           doc.transactionDate,
           doc._id
         );
@@ -76,20 +79,21 @@ class TransactionRecord {
   static async findByUserId(id: ObjectId) {
     try {
       const db = await getDatabase();
-      const collection = db.collection('racks');
-      const doc = await collection.findOne({ userId: id });
+      const collection = db.collection('transactions');
+      const cursor = collection.find({ transactionUserId: id });
 
-      if (doc) {
+      const docsArray = await cursor.toArray();
+
+      const transactionRecords = docsArray.map((doc) => {
         return new TransactionRecord(
-          doc.userId,
-          doc.shopId,
-          doc.products,
-          doc.transactionDate,
-          doc._id
+          doc.transactionUserId,
+          doc.transactionShopId,
+          doc.transactionProducts,
+          doc.transactionDate
         );
-      } else {
-        return null;
-      }
+      });
+
+      return transactionRecords;
     } catch (error) {
       console.log('=====================ERROR=====================');
       console.log(error);
@@ -100,20 +104,48 @@ class TransactionRecord {
   static async findByShopId(id: ObjectId) {
     try {
       const db = await getDatabase();
-      const collection = db.collection('racks');
-      const doc = await collection.findOne({ shopId: id });
+      const collection = db.collection('transactions');
+      const cursor = collection.find({ transactionShopId: id });
 
-      if (doc) {
+      const docsArray = await cursor.toArray();
+
+      const transactionRecords = docsArray.map((doc) => {
         return new TransactionRecord(
-          doc.userId,
-          doc.shopId,
-          doc.products,
+          doc.transactionUserId,
+          doc.transactionShopId,
+          doc.transactionProducts,
           doc.transactionDate,
           doc._id
         );
-      } else {
-        return null;
-      }
+      });
+
+      return transactionRecords;
+    } catch (error) {
+      console.log('=====================ERROR=====================');
+      console.log(error);
+      console.log('===============================================');
+    }
+  }
+
+  static async findByCreatedDate(date: number) {
+    try {
+      const db = await getDatabase();
+      const collection = db.collection('transactions');
+      const cursor = collection.find({ transactionDate: date });
+
+      const docsArray = await cursor.toArray();
+
+      const transactionRecords = docsArray.map((doc) => {
+        return new TransactionRecord(
+          doc.transactionUserId,
+          doc.transactionShopId,
+          doc.transactionProducts,
+          doc.transactionDate,
+          doc._id
+        );
+      });
+
+      return transactionRecords;
     } catch (error) {
       console.log('=====================ERROR=====================');
       console.log(error);
