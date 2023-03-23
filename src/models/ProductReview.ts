@@ -2,49 +2,56 @@ import getDatabase from '@/lib/getDBClient';
 import { ObjectId } from 'mongodb';
 
 class ProductReview {
-  private id: ObjectId | undefined;
-  private userId: ObjectId;
-  private productRating: number = 5.0;
-  private productReview: string = '';
-  private createdDate: number;
+  public _id: ObjectId | undefined;
+  private reviewUserId: ObjectId;
+  private reviewProductId: ObjectId;
+  private reviewProductRating: number = 5.0;
+  private reviewProductReview: string = '';
+  private reviewCreatedDate: number;
 
   constructor(
     userId: ObjectId,
     productId: ObjectId,
     rating: number,
     description: string,
-    createdDate: number = Date.now()
+    createdDate: number = Date.now(),
+    id: ObjectId | undefined = undefined
   ) {
-    this.id = productId;
-    this.userId = userId;
-    this.productRating = rating;
-    this.productReview = description;
-    this.createdDate = createdDate;
+    this._id = id;
+    this.reviewUserId = userId;
+    this.reviewProductId = productId;
+    this.reviewProductRating = rating;
+    this.reviewProductReview = description;
+    this.reviewCreatedDate = createdDate;
   }
 
   get Id() {
-    return this.id;
+    return this._id;
   }
 
   get UserId() {
-    return this.userId;
+    return this.reviewUserId;
+  }
+
+  get ProductId() {
+    return this.reviewProductId;
   }
 
   get Rating() {
-    return this.productRating;
+    return this.reviewProductRating;
   }
 
   get Review() {
-    return this.productReview;
+    return this.reviewProductReview;
   }
 
   get CreatedDate() {
-    return this.createdDate;
+    return this.reviewCreatedDate;
   }
 
   async pushToDatabase() {
     try {
-      if (this.id) {
+      if (this._id) {
         throw new Error('This is document already exists on the database.');
       }
 
@@ -63,19 +70,97 @@ class ProductReview {
     try {
       const db = await getDatabase();
       const collection = db.collection('product_reviews');
-      const doc = await collection.findOne({ id: id });
+      const doc = await collection.findOne({ _id: id });
 
       if (doc) {
         return new ProductReview(
-          doc.userId,
-          doc.productId,
-          doc.rating,
-          doc.description,
-          doc.createdDate
+          doc.reviewUserId,
+          doc.reviewProductId,
+          doc.reviewProductRating,
+          doc.reviewProductDescription,
+          doc.reviewCreatedDate
         );
       } else {
         return null;
       }
+    } catch (error) {
+      console.log('=====================ERROR=====================');
+      console.log(error);
+      console.log('===============================================');
+    }
+  }
+
+  static async findByUserId(id: ObjectId) {
+    try {
+      const db = await getDatabase();
+      const collection = db.collection('product_reviews');
+      const cursor = collection.find({ reviewUserId: id });
+
+      const docsArray = await cursor.toArray();
+
+      const reviewArray = docsArray.map((doc) => {
+        return new ProductReview(
+          doc.reviewUserId,
+          doc.reviewProductId,
+          doc.reviewProductRating,
+          doc.reviewProductDescription,
+          doc.reviewCreatedDate
+        );
+      });
+
+      return reviewArray;
+    } catch (error) {
+      console.log('=====================ERROR=====================');
+      console.log(error);
+      console.log('===============================================');
+    }
+  }
+
+  static async findByProductId(id: ObjectId) {
+    try {
+      const db = await getDatabase();
+      const collection = db.collection('product_reviews');
+      const cursor = collection.find({ reviewProductId: id });
+
+      const docsArray = await cursor.toArray();
+
+      const reviewArray = docsArray.map((doc) => {
+        return new ProductReview(
+          doc.reviewUserId,
+          doc.reviewProductId,
+          doc.reviewProductRating,
+          doc.reviewProductDescription,
+          doc.reviewCreatedDate
+        );
+      });
+
+      return reviewArray;
+    } catch (error) {
+      console.log('=====================ERROR=====================');
+      console.log(error);
+      console.log('===============================================');
+    }
+  }
+
+  static async findByRating(rating: number) {
+    try {
+      const db = await getDatabase();
+      const collection = db.collection('product_reviews');
+      const cursor = collection.find({ reviewProductRating: rating });
+
+      const docsArray = await cursor.toArray();
+
+      const reviewArray = docsArray.map((doc) => {
+        return new ProductReview(
+          doc.reviewUserId,
+          doc.reviewProductId,
+          doc.reviewProductRating,
+          doc.reviewProductDescription,
+          doc.reviewCreatedDate
+        );
+      });
+
+      return reviewArray;
     } catch (error) {
       console.log('=====================ERROR=====================');
       console.log(error);
