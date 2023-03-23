@@ -11,34 +11,36 @@ export default async function Handler(
   startSection('CREATE SELLER');
   console.log('REQ BODY: ', req.body);
   const {
-    id,
-    first_name,
-    last_name,
-    age,
-    email,
-    contact_number,
-    NIC,
-    country,
-    state,
-    city,
-    address,
-    postal_code,
+    user_id,
+    user_first_name,
+    user_last_name,
+    user_age,
+    user_email,
+    user_contact_number,
+    seller_nic,
+    user_country,
+    user_state,
+    user_city,
+    user_address,
+    user_postal_code,
   } = req.body as DataSellerCreate;
+
   try {
     // CREATE NEW SELLER
     const seller = new Seller(
-      first_name,
-      last_name,
-      age,
-      email,
-      contact_number,
-      country,
-      state,
-      city,
-      postal_code,
-      address,
-      new ObjectId(),
-      NIC
+      user_first_name,
+      user_last_name,
+      user_age,
+      user_email,
+      user_contact_number,
+      user_country,
+      user_state,
+      user_city,
+      user_postal_code,
+      user_address,
+      new ObjectId(), // USER ID
+      seller_nic,
+      []
     );
 
     // PUSH SELLER TO THE DATABASE
