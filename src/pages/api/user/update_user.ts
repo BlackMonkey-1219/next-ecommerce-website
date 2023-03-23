@@ -1,4 +1,5 @@
 import User from '@/models/User';
+import { UpdateUserRequest } from '@/types/user_route.types';
 import startSection, { endSection } from '@/utility/logToTerminal';
 import { ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -23,7 +24,7 @@ export default async function Handler(
       user_city,
       user_address,
       user_postal_code,
-    } = req.body;
+    } = req.body as UpdateUserRequest;
 
     // GET PROFILE
     const user = await User.findById(ObjectId.createFromHexString(user_id));
@@ -32,7 +33,7 @@ export default async function Handler(
       // UPDATE PROFILE
       user.FirstName = user_first_name;
       user.LastName = user_last_name;
-      user.Age = user_age;
+      user.Age = parseInt(user_age);
       user.Email = user_email;
       user.Contact = user_contact_number;
       user.Country = user_country;

@@ -1,4 +1,5 @@
 import Cart from '@/models/Cart';
+import { GetCartRequest } from '@/types/user_route.types';
 import startSection, { endSection } from '@/utility/logToTerminal';
 import { ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -11,7 +12,7 @@ export default async function Handler(
   console.log('REQ BODY: ', req.body);
 
   try {
-    const { user_id } = req.body;
+    const { user_id } = req.body as GetCartRequest;
 
     // FETCH CART
     const cart = Cart.findByCartOwnerId(ObjectId.createFromHexString(user_id));
@@ -26,7 +27,7 @@ export default async function Handler(
     } else {
       // CREATE NEW CART
       console.log('[+] CREATING A NEW CART FOR THE NEW USER...');
-      const newCart = new Cart(user_id);
+      const newCart = new Cart(ObjectId.createFromHexString(user_id));
       const cartSaveResult = newCart.pushToDatabase();
       console.log(cartSaveResult);
 

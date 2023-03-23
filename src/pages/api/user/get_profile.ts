@@ -1,4 +1,5 @@
 import User from '@/models/User';
+import { GetUserRequest } from '@/types/user_route.types';
 import startSection, { endSection } from '@/utility/logToTerminal';
 import { ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -11,7 +12,7 @@ export default async function Handler(
   console.log('REQ BODY: ', req.body);
 
   try {
-    const { user_id } = req.body;
+    const { user_id } = req.body as GetUserRequest;
 
     // GET PROFILE
     const user = await User.findById(ObjectId.createFromHexString(user_id));

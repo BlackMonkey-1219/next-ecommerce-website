@@ -1,4 +1,5 @@
 import User from '@/models/User';
+import { AddUserRequest } from '@/types/user_route.types';
 import startSection, { endSection } from '@/utility/logToTerminal';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -21,12 +22,12 @@ export default async function Handler(
       user_city,
       user_postal_code,
       user_address,
-    } = req.body;
+    } = req.body as AddUserRequest;
 
     const user = new User(
       user_first_name,
       user_last_name,
-      user_age,
+      parseInt(user_age),
       user_email,
       user_contact_number,
       user_country,
