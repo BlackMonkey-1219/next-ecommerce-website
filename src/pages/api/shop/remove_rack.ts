@@ -1,5 +1,6 @@
 import Rack from '@/models/Rack';
 import Shop from '@/models/Shop';
+import { RemoveRackRequest } from '@/types/shop_route_types';
 import startSection, { endSection } from '@/utility/logToTerminal';
 import { ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -12,7 +13,7 @@ export default async function Handler(
   console.log('REQ BODY: ', req.body);
 
   try {
-    const { shop_id, rack_id } = req.body;
+    const { shop_id, rack_id } = req.body as RemoveRackRequest;
 
     // GET SHOP
     const shop = await Shop.findById(ObjectId.createFromHexString(shop_id));

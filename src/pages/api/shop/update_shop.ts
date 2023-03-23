@@ -1,4 +1,5 @@
 import Shop from '@/models/Shop';
+import { UpdateShopRequest } from '@/types/shop_route_types';
 import startSection, { endSection } from '@/utility/logToTerminal';
 import { ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -17,7 +18,7 @@ export default async function Handler(
       shop_description,
       shop_contact_number,
       shop_email,
-    } = req.body;
+    } = req.body as UpdateShopRequest;
 
     // GRAB SHOP
     const shop = await Shop.findById(ObjectId.createFromHexString(shop_id));

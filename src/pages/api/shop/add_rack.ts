@@ -1,5 +1,6 @@
 import Rack from '@/models/Rack';
 import Shop from '@/models/Shop';
+import { AddRackRequest } from '@/types/shop_route_types';
 import startSection, { endSection } from '@/utility/logToTerminal';
 import { ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -12,11 +13,7 @@ export default async function Handler(
   console.log('REQ BODY: ', req.body);
 
   try {
-    const { shop_id, rack_name, rack_items } = req.body as {
-      shop_id: string;
-      rack_name: string;
-      rack_items: Array<string>;
-    };
+    const { shop_id, rack_name, rack_items } = req.body as AddRackRequest;
 
     // GET SHOP
     const shop = await Shop.findById(ObjectId.createFromHexString(shop_id));

@@ -1,5 +1,6 @@
 import Seller from '@/models/Seller';
 import Shop from '@/models/Shop';
+import { RemoveShopRequest } from '@/types/shop_route_types';
 import startSection from '@/utility/logToTerminal';
 import { ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -12,7 +13,7 @@ export default async function Handler(
   console.log('REQ BODY: ', req.body, '\n');
 
   try {
-    const { shop_id } = req.body;
+    const { shop_id } = req.body as RemoveShopRequest;
 
     // GRAB SHOP
     const shop = await Shop.findById(ObjectId.createFromHexString(shop_id));
