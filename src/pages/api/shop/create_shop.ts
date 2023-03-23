@@ -11,7 +11,13 @@ export default async function Handler(
   startSection('CREATE SHOP');
   console.log('REQ BODY: ', req.body, '\n');
   try {
-    const { seller_id, shop_name, shop_description } = req.body;
+    const {
+      seller_id,
+      shop_name,
+      shop_description,
+      shop_contact_number,
+      shop_email,
+    } = req.body;
 
     // CHECK IF THERE IS ALREADY A SHOP
     const isShop = await Shop.findBySellerId(seller_id);
@@ -23,7 +29,9 @@ export default async function Handler(
     const shop = new Shop(
       ObjectId.createFromHexString(seller_id),
       shop_name,
-      shop_description
+      shop_description,
+      shop_contact_number,
+      shop_email
     );
 
     // PUSH SHOP TO DATABASE
