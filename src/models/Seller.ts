@@ -1,7 +1,6 @@
 import { ObjectId, WithId } from 'mongodb';
 import User from './User';
 import getDatabase from '@/lib/getDBClient';
-import { SellerData } from '@/types/seller_route_types';
 
 class Seller extends User {
   private shopId: ObjectId | undefined;
@@ -60,7 +59,7 @@ class Seller extends User {
     return this.sellerNIC;
   }
 
-  set ShopID(id: ObjectId) {
+  set ShopID(id: ObjectId | undefined) {
     this.shopId = id;
   }
   get ShopID() {
@@ -107,9 +106,9 @@ class Seller extends User {
     try {
       const db = await getDatabase();
       const collection = db.collection('sellers');
-      const doc = (await collection.findOne({
+      const doc = await collection.findOne({
         _id: id,
-      })) as SellerData;
+      });
 
       if (doc) {
         return new Seller(
