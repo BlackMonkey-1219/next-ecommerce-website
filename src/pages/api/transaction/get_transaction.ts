@@ -1,4 +1,5 @@
 import TransactionRecord from '@/models/TransactionRecord';
+import { GetTransactionRequest } from '@/types/transaction_route_types';
 import startSection, { endSection } from '@/utility/logToTerminal';
 import { ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -11,7 +12,8 @@ export default async function Handler(
   console.log('REQ BODY: ', req.body);
 
   try {
-    const { user_id, shop_id, created_date } = req.body;
+    const { user_id, shop_id, created_date } =
+      req.body as GetTransactionRequest;
 
     if (user_id) {
       // GET ALL TRANSACTIONS WITH USER ID
