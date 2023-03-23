@@ -2,16 +2,16 @@ import getDatabase from '@/lib/getDBClient';
 import { ObjectId } from 'mongodb';
 
 class Category {
-  private id: ObjectId | undefined;
-  private categoryName: string = '';
+  public _id: ObjectId | undefined;
+  private categoryName: string;
 
-  constructor(name: string, id?: ObjectId) {
+  constructor(name: string, id: ObjectId | undefined = undefined) {
     this.categoryName = name;
-    this.id = id ?? undefined;
+    this._id = id;
   }
 
   get Id() {
-    return this.id;
+    return this._id;
   }
 
   set CategoryName(name: string) {
@@ -23,7 +23,7 @@ class Category {
 
   async pushToDatabase() {
     try {
-      if (this.id) {
+      if (this._id) {
         throw new Error('This is document already exists on the database.');
       }
 
@@ -40,13 +40,13 @@ class Category {
 
   async saveChanges() {
     try {
-      if (!this.id) {
+      if (!this._id) {
         throw new Error('This is a new document. Try pushing to the database.');
       }
 
       const db = await getDatabase();
       const collection = db.collection('categories');
-      collection.updateOne({ id: this.id }, this);
+      collection.updateOne({ id: this._id }, this);
     } catch (error) {
       console.log('[-] COULD NOT SAVE CHANGES TO THE DATABASE...');
       console.log('=====================ERROR=====================');
