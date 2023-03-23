@@ -1,4 +1,5 @@
 import ProductReview from '@/models/ProductReview';
+import { GetReviewRequest } from '@/types/review_route_types';
 import startSection, { endSection } from '@/utility/logToTerminal';
 import { ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -11,7 +12,9 @@ export default async function Handler(
   console.log('REQ BODY: ', req.body);
 
   try {
-    const { user_id, product_id, review_id, rating } = req.body;
+    const { user_id, product_id, review_id, rating } =
+      req.body as GetReviewRequest;
+
     if (user_id) {
       // FIND BY USER ID
       const productReviews = await ProductReview.findByUserId(

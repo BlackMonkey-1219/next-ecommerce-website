@@ -1,4 +1,5 @@
 import ProductReview from '@/models/ProductReview';
+import { RemoveReviewRequest } from '@/types/review_route_types';
 import startSection, { endSection } from '@/utility/logToTerminal';
 import { ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -11,7 +12,7 @@ export default async function Handler(
   console.log('REQ BODY: ', req.body);
 
   try {
-    const { review_id } = req.body;
+    const { review_id } = req.body as RemoveReviewRequest;
 
     // REMOVE REIVEW BY ID
     const reviewRemoveResult = await ProductReview.deleteById(

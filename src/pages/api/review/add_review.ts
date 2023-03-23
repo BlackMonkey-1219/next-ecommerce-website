@@ -1,4 +1,5 @@
 import ProductReview from '@/models/ProductReview';
+import { AddReviewRequest } from '@/types/review_route_types';
 import startSection, { endSection } from '@/utility/logToTerminal';
 import { ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -11,7 +12,8 @@ export default async function Handler(
   console.log('REQ BODY: ', req.body);
 
   try {
-    const { user_id, product_id, rating, review } = req.body;
+    const { user_id, product_id, rating, review } =
+      req.body as AddReviewRequest;
     // CREATE NEW REVIEW
 
     const productReview = new ProductReview(
