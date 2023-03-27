@@ -182,6 +182,36 @@ class User {
     }
   }
 
+  static async findByEmail(email: string) {
+    try {
+      const db = await getDatabase();
+      const collection = db.collection('users');
+      const doc = await collection.findOne({ userEmail: email });
+      if (doc) {
+        return new User(
+          doc.userFirstName,
+          doc.userLastName,
+          doc.userAge,
+          doc.userEmail,
+          doc.userContactNumber,
+          doc.userCountry,
+          doc.userState,
+          doc.userCity,
+          doc.userPostalCode,
+          doc.userAddress,
+          doc._id
+        );
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.log('[-] COULD NOT DELETE USER...');
+      console.log('===============ERROR===============');
+      console.log(error);
+      console.log('===================================');
+    }
+  }
+
   static async deleteById(id: ObjectId) {
     try {
       const db = await getDatabase();
