@@ -1,11 +1,15 @@
-import React, { FormEvent, useEffect, useRef } from 'react';
+import React, { FormEvent, useContext, useEffect, useRef } from 'react';
 import useStep from '@/hooks/useStep';
 import StepOne from './StepOne';
 import StepTwo from './StepTwo';
 import Button from '../Button/Button';
+import { registration_context } from '@/stores/RegistrationDataStore';
+import useFetch from '@/hooks/useFetch';
+import { AddUserRequest } from '@/types/user_route.types';
 
 function RegistrationForm() {
-  const userData = useRef(new Map());
+  // ===================================================================
+  const registrationDataContext = useContext(registration_context);
   const { currentStep, isFinal, prev, next } = useStep([
     <StepOne
       key={Date.now().toString()}
@@ -16,22 +20,56 @@ function RegistrationForm() {
       onInput={onDataInput}
     />,
   ]);
+  const { isLoading, execute } = useFetch('/api/user/add_user');
+  // ===================================================================
 
+  //* STORES INPUT DATA IN THE CONTEXT =========================================
   function onDataInput(e: FormEvent) {
     const dataName = (e.currentTarget as HTMLInputElement).name;
     const data = (e.currentTarget as HTMLInputElement).value;
-    userData.current.set(dataName, data);
+    registrationDataContext.registrationDataMap.set(dataName, data);
   }
 
+  //* SEND USER REG DATA TO API ================================================
+  async function submitData() {
+    const dataMap = registrationDataContext.registrationDataMap;
+
+    const regData: AddUserRequest = {
+      user_first_name: dataMap.get('user_first_name'),
+      user_last_name: dataMap.get('user_last_name'),
+      user_email: dataMap.get('user_email'),
+      user_birthday: dataMap.get('user_birthday'),
+      user_country: dataMap.get('user_country'),
+      user_state: dataMap.get('user_state'),
+      user_city: dataMap.get('user_city'),
+      user_address: [
+        dataMap.get('user_address_line_one'),
+        dataMap.get('user_address_line_two'),
+        dataMap.get('user_address_line_three'),
+      ],
+      user_postal_code: dataMap.get('user_postal_code'),
+      user_contact_number: dataMap.get('user_contact_number'),
+    };
+
+    const result = await execute({
+      method: 'POST',
+      body: JSON.stringify(regData),
+    });
+    console.log(result);
+  }
+
+  //* CHECK INPUTS & MOVE TO NEXT STEP =========================================
   function onFormSubmit(e: FormEvent) {
     e.preventDefault();
     if (isFinal) {
-      console.log(userData.current);
+      console.log(registrationDataContext.registrationDataMap.entries());
+      submitData();
     } else {
       next();
     }
   }
 
+  // ===================================================================
   return (
     <form
       action=''
