@@ -11,46 +11,51 @@ import Button from '../Button/Button';
 import { signIn, useSession } from 'next-auth/react';
 import Input from '../Input/Input';
 import { registration_context } from '@/stores/RegistrationDataStore';
+import useFetch from '@/hooks/useFetch';
 
 interface iAuthMethod {
   registrationStart: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function AuthMethod({ registrationStart }: iAuthMethod) {
+  // ==============================================================
   const { data: authData, status: authStatus } = useSession();
   const registrationContext = useContext(registration_context);
   const userEmailInput = useRef(null);
   const [message, setMessage] = useState('');
+  const { isLoading, execute } = useFetch('/api/user/check_user');
+  // ==============================================================
 
+  // EMAIL CHECK ===============================================================
   const checkUserExistance = useCallback(
     async (userEmail: string) => {
-      const result = await fetch('/api/user/check_user', {
+      const result = await execute({
         method: 'POST',
         body: JSON.stringify({ user_email: userEmail }),
       });
-      const jsonResult = await result.json();
 
-      if (jsonResult.data.result == 1) {
+      if (result.data.result == 1) {
         setMessage('THIS USER ALREADY EXISTS!');
       } else {
-        registrationContext.setData('user_email', userEmail!);
+        registrationContext.registrationDataMap.set('user_email', userEmail!);
         registrationStart(true);
       }
     },
-    [registrationStart]
+    [registrationStart, registrationContext, execute]
   );
 
+  // CHECK USER EXISTANCE WHEN USING GOOGLE AUTH =============================
   useEffect(() => {
     if (authStatus == 'authenticated') {
       checkUserExistance(authData.user?.email!);
     }
   }, [authStatus, authData, checkUserExistance]);
 
+  // REGISTER WITH EMAIL =====================================================
   function registerWithEmailButtonHandler(e: MouseEvent | TouchEvent) {
     e.preventDefault();
 
     const userEmail = (userEmailInput.current! as HTMLInputElement).value;
-
     if (userEmail.length <= 1 || !userEmail.includes('@')) {
       setMessage('Invalid Email Address!');
       setTimeout(() => {
@@ -61,6 +66,7 @@ function AuthMethod({ registrationStart }: iAuthMethod) {
     }
   }
 
+  // ==============================================================
   return (
     <div className={'w-[90%] h-fit mx-auto p-[1rem] border-[2px] rounded-md'}>
       <h3 className={'text-center'}>Sign Up</h3>
@@ -78,15 +84,7 @@ function AuthMethod({ registrationStart }: iAuthMethod) {
           colorScheme={'NORMAL'}
           placeholder={'Email'}
         />
-        <Input
-          type={'password'}
-          width={'full'}
-          height={'fit'}
-          name={'user_password'}
-          id={'user_password_input'}
-          colorScheme={'NORMAL'}
-          placeholder={'Password'}
-        />
+
         <Button
           width={'full'}
           height={'fit'}
