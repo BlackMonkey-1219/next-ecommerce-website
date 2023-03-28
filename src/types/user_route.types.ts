@@ -1,7 +1,7 @@
 export type AddUserRequest = {
   user_first_name: string;
   user_last_name: string;
-  user_age: string;
+  user_birthday: string;
   user_email: string;
   user_contact_number: string;
   user_country: string;
