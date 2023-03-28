@@ -6,7 +6,7 @@ class User {
   public _id: ObjectId | undefined;
   protected userFirstName: string;
   protected userLastName: string;
-  protected userAge: number;
+  protected userBirthday: string;
   protected userCountry: string;
   protected userState: string;
   protected userCity: string;
@@ -18,7 +18,7 @@ class User {
   constructor(
     firstName: string,
     lastName: string,
-    age: number,
+    birthday: string,
     email: string,
     contactNumber: string,
     country: string,
@@ -30,7 +30,7 @@ class User {
   ) {
     this.userFirstName = firstName;
     this.userLastName = lastName;
-    this.userAge = age;
+    this.userBirthday = birthday;
     this.userContactNumber = contactNumber;
     this.userEmail = email;
     this.userCountry = country;
@@ -59,11 +59,11 @@ class User {
     return this.userLastName;
   }
 
-  set Age(age: number) {
-    this.userAge = age;
+  set Birthday(birthday: string) {
+    this.userBirthday = birthday;
   }
-  get Age() {
-    return this.userAge;
+  get Birthday() {
+    return this.userBirthday;
   }
 
   set Email(email: string) {

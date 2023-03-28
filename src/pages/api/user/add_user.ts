@@ -14,7 +14,7 @@ export default async function Handler(
     const {
       user_first_name,
       user_last_name,
-      user_age,
+      user_birthday,
       user_email,
       user_contact_number,
       user_country,
@@ -22,12 +22,12 @@ export default async function Handler(
       user_city,
       user_postal_code,
       user_address,
-    } = req.body as AddUserRequest;
+    } = JSON.parse(req.body) as AddUserRequest;
 
     const user = new User(
       user_first_name,
       user_last_name,
-      parseInt(user_age),
+      user_birthday,
       user_email,
       user_contact_number,
       user_country,
