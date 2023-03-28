@@ -34,6 +34,25 @@ function StepOne({ onInput }: iStep) {
         onInput={onInput}
       />
       <Input
+        type={'month'}
+        width={'full'}
+        height={'fit'}
+        name={'user_birthday'}
+        id={'user_birthday_input'}
+        colorScheme={'NORMAL'}
+        required={true}
+        onInput={onInput}
+      />
+      <Input
+        type={'password'}
+        width={'full'}
+        height={'fit'}
+        name={'user_password'}
+        id={'user_password_input'}
+        colorScheme={'NORMAL'}
+        placeholder={'Password'}
+      />
+      <Input
         type={'tel'}
         width={'full'}
         height={'fit'}
