@@ -77,6 +77,17 @@ function StepTwo({ onInput }: iStep) {
         required={false}
         onInput={onInput}
       />
+      <Input
+        type={'text'}
+        width={'full'}
+        height={'fit'}
+        name={'user_postal_code'}
+        id={'user_postal_code_input'}
+        colorScheme={'NORMAL'}
+        placeholder={'Postal Code'}
+        required={true}
+        onInput={onInput}
+      />
     </div>
   );
 }
