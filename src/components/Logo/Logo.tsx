@@ -1,14 +1,15 @@
 import Image from 'next/image';
 import React from 'react';
+import logo from '../../assets/next-ecommerce-logo.png';
 
 function Logo() {
   return (
     <div className={'w-fit h-fit'}>
       <Image
         alt={'logo'}
-        src={''}
+        src={logo.src}
         width={160}
-        className={'border-[2px]'}
+        height={50}
       />
     </div>
   );
