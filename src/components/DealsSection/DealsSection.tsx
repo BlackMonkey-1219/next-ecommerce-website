@@ -10,9 +10,9 @@ function DealsSection() {
       <Container>
         <div
           className={
-            'w-full h-fit p-[1rem] flex flex-row items-stretch justify-start gap-[1rem] bg-white'
+            'aspect-[4/1] w-full h-auto p-[1rem] flex flex-row items-stretch justify-start gap-[1rem] bg-white'
           }>
-          <div>
+          <div className={'flex-[1]'}>
             <b className={'text-xl'}>Hot Deals & Offers</b>
             <br />
             <p>Featured</p>
@@ -20,7 +20,7 @@ function DealsSection() {
           </div>
           <div
             className={
-              'w-full h-fit py-[1rem] overflow-x-auto overflow-y-hidden'
+              'flex-[3] w-full h-fit py-[1rem] overflow-x-auto overflow-y-hidden'
             }>
             <ul
               className={
