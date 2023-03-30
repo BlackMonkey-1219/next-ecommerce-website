@@ -2,6 +2,7 @@ import React from 'react';
 import Container from '../Container/Container';
 import HomeHeroCategoryList from '../HomeHeroCategoryList/HomeHeroCategoryList';
 import SlideShow from '../SlideShow/SlideShow';
+import HeroNoticePanel from '../HeroNoticePanel/HeroNoticePanel';
 
 function HomeHeroSection() {
   return (
@@ -13,6 +14,7 @@ function HomeHeroSection() {
           }>
           <HomeHeroCategoryList />
           <SlideShow />
+          <HeroNoticePanel />
         </div>
       </Container>
     </section>
