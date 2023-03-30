@@ -4,7 +4,7 @@ function HomeHeroCategoryList() {
   return (
     <ul
       className={
-        'w-fit h-full p-[0.5rem] flex flex-col items-start justify-start gap-[1rem] whitespace-nowrap'
+        'basis-[20%] w-fit h-full p-[0.5rem] flex flex-col items-start justify-start gap-[1rem] whitespace-nowrap'
       }>
       <li
         className={
