@@ -23,6 +23,7 @@ interface iButton {
   children: ReactNode | ReactNode[];
   disabled?: true | false;
   action?: (e: React.MouseEvent | React.TouchEvent) => void;
+  classes?: string;
 }
 
 function Button({
@@ -32,12 +33,17 @@ function Button({
   children,
   disabled = false,
   action,
+  classes,
 }: iButton) {
   return (
     <button
       disabled={disabled}
       onClick={action}
-      className={`${widthOptions[width]} ${heightOptions[height]} py-[0.5em] px-[0.75em] ${typeOptions[type]} font-normal rounded-md `}>
+      className={`${widthOptions[width]} ${
+        heightOptions[height]
+      } py-[0.5em] px-[0.75em] ${typeOptions[type]} font-normal rounded-md ${
+        classes ?? null
+      }`}>
       {children}
     </button>
   );
