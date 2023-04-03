@@ -103,3 +103,8 @@ small,
 .text_small {
   font-size: 0.8rem;
 }
+
+hr {
+  margin: 1rem 0rem 0.25rem 0rem;
+  border-color: var(--clr-primary)
+}
