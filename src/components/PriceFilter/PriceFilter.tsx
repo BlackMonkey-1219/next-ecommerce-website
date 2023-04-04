@@ -17,11 +17,14 @@ function PriceFilter() {
         <strong
           onClick={collaspeController}
           className={'block mt-[0.5rem] mb-[0.75rem] cursor-pointer'}>
-          Category
+          Price
         </strong>
         {open ? <AiFillCaretDown /> : <AiFillCaretUp />}
       </div>
-      <div className={`overflow-hidden w-full ${open ? 'h-fit' : 'h-[0]'}`}>
+      <div
+        className={`overflow-hidden w-full ${
+          open ? 'h-fit p-[0.5rem]' : 'h-[0] p-[0]'
+        } border-[1px] rounded-md transition-all duration-500`}>
         <label htmlFor='min_price_input'>Minimum Price: </label>
         <input
           type='range'
