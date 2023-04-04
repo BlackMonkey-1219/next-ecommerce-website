@@ -31,9 +31,9 @@ function CategoryFilter() {
         {open ? <AiFillCaretDown /> : <AiFillCaretUp />}
       </div>
       <ul
-        className={`overflow-hidden transition-all duration-500 ${
-          open ? 'h-fit' : 'h-[0]'
-        }`}>
+        className={`  ${
+          open ? 'h-[10rem] p-[0.5rem]' : 'h-[0] p-[0]'
+        } border-[1px] rounded-md overflow-y-auto transition-all duration-500`}>
         {categories.map((category, index) => {
           return (
             <li
