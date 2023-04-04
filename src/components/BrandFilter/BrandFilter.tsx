@@ -26,11 +26,14 @@ function BrandFilter() {
         <strong
           onClick={collaspeController}
           className={'block mt-[0.5rem] mb-[0.75rem] cursor-pointer'}>
-          Category
+          Brand
         </strong>
         {open ? <AiFillCaretDown /> : <AiFillCaretUp />}
       </div>
-      <ul className={`overflow-hidden w-full ${open ? 'h-fit' : 'h-[0]'}`}>
+      <ul
+        className={` w-full ${
+          open ? 'h-[10rem] p-[0.5rem]' : 'h-[0] p-[0]'
+        } border-[1px] rounded-md overflow-y-auto transition-all duration-500`}>
         {brands.map((brand, index) => {
           return (
             <li
