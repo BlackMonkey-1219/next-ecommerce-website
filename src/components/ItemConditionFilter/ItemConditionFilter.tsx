@@ -16,15 +16,19 @@ function ItemConditionFilter() {
         <strong
           onClick={collaspeController}
           className={'block mt-[0.5rem] mb-[0.75rem] cursor-pointer'}>
-          Category
+          Condition
         </strong>
         {open ? <AiFillCaretDown /> : <AiFillCaretUp />}
       </div>
-      <ul className={`overflow-hidden w-full ${open ? 'h-fit' : 'h-[0]'}`}>
+      <ul
+        className={` w-full ${
+          open ? 'h-[10rem] p-[0.5rem]' : 'h-[0] p-[0]'
+        } border-[1px] rounded-md overflow-y-auto transition-all duration-500`}>
         <li>
           <input
-            type='checkbox'
-            name='condition_new'
+            type='radio'
+            name='condition'
+            value={'new'}
             id='condition_new_input'
             className={'mr-[0.5rem]'}
           />
@@ -32,8 +36,9 @@ function ItemConditionFilter() {
         </li>
         <li>
           <input
-            type='checkbox'
-            name='condition_used'
+            type='radio'
+            name='condition'
+            value={'used'}
             id='condition_used_input'
             className={'mr-[0.5rem]'}
           />
@@ -41,8 +46,9 @@ function ItemConditionFilter() {
         </li>
         <li>
           <input
-            type='checkbox'
-            name='condition_reconditioned'
+            type='radio'
+            name='condition'
+            value={'reconditioned'}
             id='condition_reconditioned_input'
             className={'mr-[0.5rem]'}
           />
