@@ -25,7 +25,10 @@ function RatingFilter() {
         </strong>
         {open ? <AiFillCaretDown /> : <AiFillCaretUp />}
       </div>
-      <ul className={`overflow-hidden w-full ${open ? 'h-fit' : 'h-[0]'}`}>
+      <ul
+        className={` w-full ${
+          open ? 'h-[10rem] p-[0.5rem]' : 'h-[0] p-[0]'
+        } border-[1px] rounded-md overflow-y-auto transition-all duration-500`}>
         <li
           className={
             'w-full h-fit my-[0.25rem] flex flex-row items-center justify-start gap-[1rem]'
@@ -40,11 +43,11 @@ function RatingFilter() {
             className={
               'w-full h-fit flex flex-row items-center justify-start gap-[0]'
             }>
-            <AiFillStar />
-            <AiFillStar />
-            <AiFillStar />
-            <AiFillStar />
-            <AiFillStar />
+            <AiFillStar fill={'#ffde0a'} />
+            <AiFillStar fill={'#ffde0a'} />
+            <AiFillStar fill={'#ffde0a'} />
+            <AiFillStar fill={'#ffde0a'} />
+            <AiFillStar fill={'#ffde0a'} />
           </label>
         </li>
         <li
@@ -53,19 +56,19 @@ function RatingFilter() {
           }>
           <input
             type='checkbox'
-            name='rating_5'
-            id='rating_5_input'
+            name='rating_4'
+            id='rating_4_input'
           />
           <label
-            htmlFor='rating_5_input'
+            htmlFor='rating_4_input'
             className={
               'w-full h-fit flex flex-row items-center justify-start gap-[0]'
             }>
-            <AiFillStar />
-            <AiFillStar />
-            <AiFillStar />
-            <AiFillStar />
-            <AiOutlineStar />
+            <AiFillStar fill={'#ffde0a'} />
+            <AiFillStar fill={'#ffde0a'} />
+            <AiFillStar fill={'#ffde0a'} />
+            <AiFillStar fill={'#ffde0a'} />
+            <AiOutlineStar fill={'#ffde0a'} />
           </label>
         </li>
         <li
@@ -74,19 +77,19 @@ function RatingFilter() {
           }>
           <input
             type='checkbox'
-            name='rating_5'
-            id='rating_5_input'
+            name='rating_3'
+            id='rating_3_input'
           />
           <label
-            htmlFor='rating_5_input'
+            htmlFor='rating_3_input'
             className={
               'w-full h-fit flex flex-row items-center justify-start gap-[0]'
             }>
-            <AiFillStar />
-            <AiFillStar />
-            <AiFillStar />
-            <AiOutlineStar />
-            <AiOutlineStar />
+            <AiFillStar fill={'#ffde0a'} />
+            <AiFillStar fill={'#ffde0a'} />
+            <AiFillStar fill={'#ffde0a'} />
+            <AiOutlineStar fill={'#ffde0a'} />
+            <AiOutlineStar fill={'#ffde0a'} />
           </label>
         </li>
         <li
@@ -95,19 +98,19 @@ function RatingFilter() {
           }>
           <input
             type='checkbox'
-            name='rating_5'
-            id='rating_5_input'
+            name='rating_2'
+            id='rating_2_input'
           />
           <label
-            htmlFor='rating_5_input'
+            htmlFor='rating_2_input'
             className={
               'w-full h-fit flex flex-row items-center justify-start gap-[0]'
             }>
-            <AiFillStar />
-            <AiFillStar />
-            <AiOutlineStar />
-            <AiOutlineStar />
-            <AiOutlineStar />
+            <AiFillStar fill={'#ffde0a'} />
+            <AiFillStar fill={'#ffde0a'} />
+            <AiOutlineStar fill={'#ffde0a'} />
+            <AiOutlineStar fill={'#ffde0a'} />
+            <AiOutlineStar fill={'#ffde0a'} />
           </label>
         </li>
         <li
@@ -116,19 +119,19 @@ function RatingFilter() {
           }>
           <input
             type='checkbox'
-            name='rating_5'
-            id='rating_5_input'
+            name='rating_1'
+            id='rating_1_input'
           />
           <label
-            htmlFor='rating_5_input'
+            htmlFor='rating_1_input'
             className={
               'w-full h-fit flex flex-row items-center justify-start gap-[0]'
             }>
-            <AiFillStar />
-            <AiOutlineStar />
-            <AiOutlineStar />
-            <AiOutlineStar />
-            <AiOutlineStar />
+            <AiFillStar fill={'#ffde0a'} />
+            <AiOutlineStar fill={'#ffde0a'} />
+            <AiOutlineStar fill={'#ffde0a'} />
+            <AiOutlineStar fill={'#ffde0a'} />
+            <AiOutlineStar fill={'#ffde0a'} />
           </label>
         </li>
       </ul>
