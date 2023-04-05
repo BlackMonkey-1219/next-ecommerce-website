@@ -1,43 +1,36 @@
 import Image from 'next/image';
 import React from 'react';
+import Avatar from '../Avatar/Avatar';
 
 function ProductReview() {
   return (
-    <table
-      border={2}
-      className={
-        'w-full h-fit p-[1rem] border-[2px] border-clr-primary/20 bg-white rounded-md'
-      }>
-      <thead className={'border-b-[2px]'}>
+    <table className={'w-full h-fit p-[1rem] bg-white rounded-md'}>
+      <thead className={'border-[2px]'}>
         <tr>
-          <th className={'flex flex-row gap-[0.5rem]'}>
-            <div
-              className={
-                'relative aspect-[1/1] w-[5rem] h-auto rounded-full overflow-hidden'
-              }>
-              <Image
-                src={''}
-                alt={''}
-                fill={true}
-              />
+          <td className={'min-w-[12rem]'}>
+            <div className={'w-full h-fit flex flex-row gap-[1rem]'}>
+              <Avatar size={'md'} />
+              <div
+                className={
+                  'flex flex-col items-start justify-start gap-[0.125rem]'
+                }>
+                <p className={'m-0 whitespace-nowrap'}>User Name</p>
+                <small>{new Date('1999-12-19').toLocaleDateString()}</small>
+              </div>
             </div>
-            <div>
-              <p className={'mb-[0.25rem]'}>User Name</p>
-              <small>{new Date('1999-12-19').toLocaleDateString()}</small>
-            </div>
-          </th>
-          <th className={'text-center text-xl'}>
+          </td>
+          <td colSpan={2}>
             <p>
               Lorem ipsum dolor sit amet consectetur, adipisicing elit. Optio
               quisquam expedita quam? Eveniet, facilis consectetur?
             </p>
-          </th>
+          </td>
         </tr>
       </thead>
-      <tbody className={'text-xl'}>
+      <tbody className={'mt-[1rem] border-[2px]'}>
         <tr>
-          <th className={'text-center text-lg'}>Buyer Review</th>
-          <td>
+          <th scope={'row'}>Buyer Review</th>
+          <td colSpan={2}>
             Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam
             magnam rerum incidunt, quasi minima, tempore officiis quidem cum
             sapiente quod fugit suscipit. In ratione omnis est velit ipsa porro
@@ -45,11 +38,7 @@ function ProductReview() {
           </td>
         </tr>
         <tr>
-          <th
-            scope={'row'}
-            className={'text-center text-lg'}>
-            Seller Reply
-          </th>
+          <th scope={'row'}>Seller Reply</th>
           <td colSpan={2}>
             Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quisquam
             consequatur magni optio maxime, quasi nihil voluptas facilis dolor
