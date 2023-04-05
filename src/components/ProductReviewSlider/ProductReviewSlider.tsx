@@ -5,7 +5,7 @@ function ProductReviewSlider() {
   return (
     <ul
       className={
-        'w-full h-fit p-[1rem] flex flex-col items-start justify-start gap-[2rem] border-[2px] bg-white rounded-md'
+        'w-full h-fit flex flex-col items-start justify-start gap-[2rem] bg-white rounded-md'
       }>
       <li className={'snap-center'}>
         <ProductReview />
