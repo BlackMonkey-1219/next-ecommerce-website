@@ -5,6 +5,8 @@ import FeatureFilter from '@/components/FeatureFilter/FeatureFilter';
 import Footer from '@/components/Footer/Footer';
 import ItemConditionFilter from '@/components/ItemConditionFilter/ItemConditionFilter';
 import Navigation from '@/components/Navigation/Navigation';
+import NewsletterOptinSection from '@/components/NewsletterOptinSection/NewsletterOptinSection';
+import Pagination from '@/components/Pagination/Pagination';
 import PriceFilter from '@/components/PriceFilter/PriceFilter';
 import RatingFilter from '@/components/RatingFilter/RatingFilter';
 import SearchResulViewOptionPanel from '@/components/SearchResulViewOptionPanel/SearchResulViewOptionPanel';
@@ -77,7 +79,14 @@ function Search() {
               </ul>
             </div>
           </div>
+          <div
+            className={
+              'w-full h-fit flex flex-row items-center justify-end gap-[1rem]'
+            }>
+            <Pagination />
+          </div>
         </Container>
+        <NewsletterOptinSection />
       </main>
       <Footer />
     </>
