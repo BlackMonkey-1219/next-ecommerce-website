@@ -2,7 +2,7 @@ import React from 'react';
 
 function ProductDescription() {
   return (
-    <article className={'w-full h-fit p-[1rem] bg-white'}>
+    <article className={'w-full h-fit bg-white'}>
       <p>
         Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorum quia
         ea, eligendi blanditiis similique repudiandae perspiciatis earum
