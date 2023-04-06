@@ -3,6 +3,7 @@ import Container from '../Container/Container';
 import Searchbar from '../Searchbar/Searchbar';
 import ToolbarLinks from '../ToolbarLinks/ToolbarLinks';
 import Logo from '../Logo/Logo';
+import Link from 'next/link';
 
 function Toolbar() {
   return (
@@ -10,7 +11,9 @@ function Toolbar() {
       <Container>
         <div
           className={'w-full h-fit flex flex-row items-center justify-between'}>
-          <Logo />
+          <Link href={'/'}>
+            <Logo />
+          </Link>
           <Searchbar />
           <ToolbarLinks />
         </div>
