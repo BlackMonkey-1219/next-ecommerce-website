@@ -6,7 +6,9 @@ import Footer from '@/components/Footer/Footer';
 import Navigation from '@/components/Navigation/Navigation';
 import Toolbar from '@/components/Toolbar/Toolbar';
 import Head from 'next/head';
+import Link from 'next/link';
 import React from 'react';
+import { BsArrowLeft } from 'react-icons/bs';
 
 function Cart() {
   return (
@@ -40,7 +42,15 @@ function Cart() {
       <main>
         <section>
           <Container>
-            <h2>My Cart(3)</h2>
+            <div className={'flex flex-row items-center justify-between'}>
+              <h2 className={'inline-block w-fit h-fit'}>My Cart(3)</h2>
+              <Link
+                href={'/'}
+                className={'inline-block w-fit h-fit'}>
+                <BsArrowLeft className={'inline-block mr-[1rem]'} />
+                Back to ship
+              </Link>
+            </div>
             <div
               className={
                 'w-full h-fit flex flex-row items-start justify-start gap-[1rem]'
