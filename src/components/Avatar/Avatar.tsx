@@ -6,10 +6,12 @@ const sizeOptions = {
   md: 'w-[3.5rem]',
   lg: 'w-[4.25rem]',
   xl: 'w-[5rem]',
+  xxl: 'w-[6.5rem]',
+  full: 'w-full',
 };
 
 interface iAvatar {
-  size: 'sm' | 'md' | 'lg' | 'xl';
+  size: 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'full';
 }
 
 function Avatar({ size }: iAvatar) {
