@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import React from 'react';
+import Button from '../Button/Button';
 
 function CartItem() {
   return (
@@ -33,6 +34,7 @@ function CartItem() {
             id='product_count_input'
             max={100}
             min={1}
+            defaultValue={1}
             className={
               'w-[4rem] h-fit px-[0.25rem] py-[0.125rem] text-right border-[2px] rounded-md'
             }
@@ -40,6 +42,16 @@ function CartItem() {
           <hr />
           <label htmlFor=''>${99.78 * 15}</label>
           <hr />
+        </td>
+      </tr>
+      <tr>
+        <td colSpan={3}>
+          <Button
+            type={'secondary'}
+            width={'full'}
+            height={'fit'}>
+            REMOVE
+          </Button>
         </td>
       </tr>
     </table>
